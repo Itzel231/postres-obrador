@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dulce Obrador — Postres Artesanales</title>
+  <style>
+    :root {
+      --bg: #fffaf5;
+      --surface: #ffffff;
+      --surface-alt: #fdf1e6;
+      --text: #2d1e17;
+      --muted: #6f594e;
+      --primary: #c04a3e;
+      --primary-hover: #a33a2f;
+      --border: #edd9c9;
+      --success: #1f7a4c;
+      --danger: #b8293d;
+      --shadow: 0 8px 24px rgba(45, 30, 23, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .nav-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    button, input, select { font: inherit; }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 0.55rem 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-outline {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-outline:hover { background: var(--surface-alt); }
+
+    .btn-sm { padding: 0.35rem 0.65rem; font-size: 0.85rem; border-radius: 8px; }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 5rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fde8d7 0%, #fff7f0 60%, #fbe0dc 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(1.25rem, 4vw, 2.4rem);
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .hero h1 { font-size: clamp(1.5rem, 3.5vw, 2.3rem); line-height: 1.2; margin-bottom: 0.6rem; }
+    .hero p { color: var(--muted); margin-bottom: 1rem; }
+
+    .hero-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-emoji { font-size: clamp(2.5rem, 6vw, 3.8rem); line-height: 1.2; }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .grid-productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.15rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.18s ease;
+    }
+
+    .card:hover { transform: translateY(-3px); }
+
+    .card-img-box {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--surface-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+
+    .card-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-img-box span.hint {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--text);
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .card-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      flex: 1;
+    }
+
+    .card-cat {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .card-title { font-size: 1.05rem; font-weight: 700; }
+    .card-desc { font-size: 0.9rem; color: var(--muted); flex: 1; }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .price { font-weight: 800; font-size: 1.05rem; }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(1rem, 3vw, 1.75rem);
+      box-shadow: var(--shadow);
+      margin-top: 1.5rem;
+    }
+
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .detail-visual {
+      background: var(--surface-alt);
+      border-radius: var(--radius);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .detail-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .form-group { margin-bottom: 0.85rem; }
+    .form-group label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td {
+      text-align: left;
+      padding: 0.7rem 0.65rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    th { background: var(--surface-alt); font-weight: 700; }
+
+    .status-pill {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .status-activo { background: #e3f6ec; color: var(--success); }
+    .status-inactivo { background: #fde6ea; color: var(--danger); }
+
+    .db-corner-btn {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      z-index: 45;
+      background: #2d1e17;
+      color: #fff;
+      border: 1px solid #4a3329;
+      border-radius: 999px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      opacity: 0.72;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .db-corner-btn:hover {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(25, 16, 15, 0.58);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 50;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      background: var(--text);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+      z-index: 60;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .hidden { display: none !important; }
+
+    .helper-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--surface-alt);
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <div class="brand" onclick="irAInicio()">
+        <span>🍰🧁</span>
+        <span>Dulce Obrador</span>
+      </div>
+
+      <div class="nav-actions">
+        <span id="sesionBadge" class="helper-note" style="margin:0; padding:0.35rem 0.65rem;">
+          Invitado
+        </span>
+        <button class="btn btn-outline btn-sm" onclick="abrirSeccion('carrito')">
+          🛒 Pedido (<span id="contadorCarrito">0</span>)
+        </button>
+        <button id="btnLogin" class="btn btn-primary btn-sm" onclick="abrirModalLogin()">
+          Iniciar sesión
+        </button>
+        <button id="btnLogout" class="btn btn-outline btn-sm hidden" onclick="cerrarSesion()">
+          Salir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>Postres artesanales recién horneados</h1>
+        <p>
+          Explora postres reales con fotografía, haz clic en cualquier imagen para ver más opciones,
+          elegir tamaño o porciones y armar tu pedido desde celular, laptop o escritorio.
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.6rem;">
+          <button class="btn btn-primary" onclick="filtrarCategoria('Todos')">
+            Ver todos los postres (8)
+          </button>
+          <button class="btn btn-outline" onclick="filtrarCategoria('Pasteles')">
+            Pasteles
+          </button>
+          <button class="btn btn-outline" onclick="filtrarCategoria('Postres Individuales')">
+            Postres Individuales
+          </button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-emoji">🍰 🧁 🍮 🍪</div>
+        <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">
+          Toca cualquier foto de postre para personalizarlo y ver más variedades
+        </p>
+      </div>
+    </section>
+
+    <div class="filters" id="filtrosBar">
+      <button class="btn btn-outline btn-sm filter-btn active" data-cat="Todos" onclick="filtrarCategoria('Todos')">Todos los postres</button>
+      <button class="btn btn-outline btn-sm filter-btn" data-cat="Pasteles" onclick="filtrarCategoria('Pasteles')">Pasteles</button>
+      <button class="btn btn-outline btn-sm filter-btn" data-cat="Pays y Cheesecakes" onclick="filtrarCategoria('Pays y Cheesecakes')">Pays y Cheesecakes</button>
+      <button class="btn btn-outline btn-sm filter-btn" data-cat="Postres Individuales" onclick="filtrarCategoria('Postres Individuales')">Postres Individuales</button>
+    </div>
+
+    <section id="catalogoSection">
+      <div class="grid-productos" id="gridProductos"></div>
+    </section>
+
+    <section id="detalleSection" class="panel hidden">
+      <div class="panel-header">
+        <h2 id="detalleTitulo">Detalle del postre</h2>
+        <button class="btn btn-outline btn-sm" onclick="irAInicio()">← Volver al menú de postres</button>
+      </div>
+
+      <div class="detail-layout">
+        <div class="detail-visual" id="detalleVisual"></div>
+        <div>
+          <div class="card-cat" id="detalleCat">Categoría</div>
+          <h3 id="detalleNombre" style="font-size:1.4rem; margin:0.25rem 0;"></h3>
+          <p id="detalleDesc" style="color:var(--muted); margin-bottom:1rem;"></p>
+
+          <div class="form-group">
+            <label for="selectTamano">Elige tamaño / porciones</label>
+            <select id="selectTamano" onchange="actualizarPrecioDetalle()">
+              <option data-extra="0">Individual / Chico (4 porciones) (+$0)</option>
+              <option data-extra="140">Mediano (10 porciones) (+$140)</option>
+              <option data-extra="260">Familiar / Grande (18 porciones) (+$260)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="selectExtraPostre">Añadir cobertura o complemento dulce</label>
+            <select id="selectExtraPostre" onchange="actualizarPrecioDetalle()">
+              <option value="0" data-label="Sin complemento extra">Sin complemento extra (+$0)</option>
+              <option value="55" data-label="Extra frutos rojos frescos">Extra frutos rojos frescos (+$55)</option>
+              <option value="65" data-label="Salsa de chocolate belga y nuez">Salsa de chocolate belga y nuez (+$65)</option>
+              <option value="80" data-label="Bola de helado artesanal de vainilla">Bola de helado artesanal de vainilla (+$80)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="inputDedicatoria">Mensaje en chocolate o tarjeta (opcional)</label>
+            <input type="text" id="inputDedicatoria" placeholder="Ej. ¡Feliz cumpleaños!" />
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:1rem;">
+            <div>
+              <span style="font-size:0.85rem; color:var(--muted);">Total del postre:</span>
+              <div class="price" id="detallePrecioFinal" style="font-size:1.35rem;">$0</div>
+            </div>
+            <button class="btn btn-primary" onclick="agregarProductoPersonalizado()">
+              Elegir postre
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <h3 style="margin-bottom:0.85rem;">Más postres reales disponibles que puedes explorar</h3>
+        <div class="grid-productos" id="gridRelacionados"></div>
+      </div>
+    </section>
+
+    <section id="carritoSection" class="panel hidden">
+      <div class="panel-header">
+        <h2>Tu pedido de postres</h2>
+        <button class="btn btn-outline btn-sm" onclick="irAInicio()">← Ver más postres</button>
+      </div>
+      <div id="listaCarrito"></div>
+      <div id="resumenCarrito" style="margin-top:1rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem;"></div>
+    </section>
+
+    <section id="adminSection" class="panel hidden">
+      <div class="panel-header">
+        <div>
+          <h2>Base de Datos Interactiva (Administrador)</h2>
+          <p style="font-size:0.88rem; color:var(--muted);">
+            Gestiona usuarios: cambia su rol (<strong>cliente</strong> / <strong>admin</strong>) o su estado (<strong>activo</strong> / <strong>inactivo</strong>).
+          </p>
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-outline btn-sm" onclick="cerrarAccesoBD()">Bloquear BD</button>
+          <button class="btn btn-outline btn-sm" onclick="irAInicio()">← Volver al catálogo</button>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:0.65rem;">Usuarios registrados</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Contraseña</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones rápidas</th>
+            </tr>
+          </thead>
+          <tbody id="tablaUsuariosBody"></tbody>
+        </table>
+      </div>
+
+      <h3 style="margin:1.75rem 0 0.65rem;">Pedidos registrados</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Folio</th>
+              <th>Cliente</th>
+              <th>Postres elegidos</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="tablaPedidosBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <button class="db-corner-btn" onclick="solicitarAccesoBD()" title="Abrir Base de Datos de Administrador">
+    🔐 Base de Datos
+  </button>
+
+  <div class="modal-backdrop" id="modalLogin">
+    <div class="modal">
+      <div class="panel-header" style="margin-bottom:1rem; padding-bottom:0.5rem;">
+        <h3>Iniciar sesión</h3>
+        <button class="btn btn-outline btn-sm" onclick="cerrarModalLogin()">✕</button>
+      </div>
+
+      <form onsubmit="procesarLogin(event)">
+        <div class="form-group">
+          <label for="loginUsuario">Usuario</label>
+          <input type="text" id="loginUsuario" required placeholder="Escribe cualquier usuario" />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required placeholder="Escribe tu contraseña" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+          Entrar
+        </button>
+      </form>
+
+      <div class="helper-note">
+        <strong>Acceso básico:</strong> acepta cualquier usuario y contraseña para realizar pedidos (si el usuario está activo).
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalAdminBD">
+    <div class="modal">
+      <div class="panel-header" style="margin-bottom:1rem; padding-bottom:0.5rem;">
+        <h3>🔐 Acceso de Administrador</h3>
+        <button class="btn btn-outline btn-sm" onclick="cerrarModalAdminBD()">✕</button>
+      </div>
+
+      <form onsubmit="validarClaveBD(event)">
+        <div class="form-group">
+          <label for="claveAdminBD">Contraseña de Administrador</label>
+          <input type="password" id="claveAdminBD" required placeholder="Ingresa tu contraseña" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+          Desbloquear Base de Datos
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "PostresFlores2026";
+
+    const POSTRES = [
+      {
+        id: 1,
+        nombre: "Pastel de Fresas con Crema",
+        categoria: "Pasteles",
+        precioBase: 360,
+        foto: "https://www.suqiee.com.mx/wp-content/uploads/2023/03/instagram-pastel-de-fresas-con-crema-5.jpg",
+        emojiRespaldo: "🍓",
+        desc: "Bizcocho esponjoso de vainilla relleno de crema batida natural y fresas frescas."
+      },
+      {
+        id: 2,
+        nombre: "Cheesecake de Frutos Rojos",
+        categoria: "Pays y Cheesecakes",
+        precioBase: 380,
+        foto: "https://lamanchega.com.uy/wp-content/uploads/2025/12/26cheesecakefrutosrojos.jpg",
+        emojiRespaldo: "🍰",
+        desc: "Base crujiente de galleta, queso crema horneado y cobertura artesanal de frutos rojos."
+      },
+      {
+        id: 3,
+        nombre: "Pastel Tres Leches con Cajeta",
+        categoria: "Pasteles",
+        precioBase: 390,
+        foto: "https://www.grupochantilly.com.mx/wp-content/uploads/2022/07/Pastel-Tres-Leches.png",
+        emojiRespaldo: "🍮",
+        desc: "Pan húmedo bañado en mezcla de tres leches, cubierto con crema, nuez y cajeta."
+      },
+      {
+        id: 4,
+        nombre: "Cupcakes Gourmet Decorados",
+        categoria: "Postres Individuales",
+        precioBase: 250,
+        foto: "https://www.quierocupcakes.com/wp-content/uploads/2021/05/DSC05950-min-scaled.jpg",
+        emojiRespaldo: "🧁",
+        desc: "Surtido de vainilla, chocolate y sabores de temporada decorados artesanalmente."
+      },
+      {
+        id: 5,
+        nombre: "Pay de Limón con Merengue",
+        categoria: "Pays y Cheesecakes",
+        precioBase: 310,
+        foto: "https://www.goodnes.com/sites/g/files/jgfbjl321/files/srh_recipes/5f0dcfd875424ed8cbbdce32ed812336.jpg",
+        emojiRespaldo: "🥧",
+        desc: "Crema cítrica equilibrada sobre base de galleta dorada y merengue flameado."
+      },
+      {
+        id: 6,
+        nombre: "Brownies de Chocolate con Nuez",
+        categoria: "Postres Individuales",
+        precioBase: 240,
+        foto: "https://laroussecocina.mx/wp-content/uploads/2021/07/Brownies-con-nueces.png",
+        emojiRespaldo: "🍫",
+        desc: "Cuadros intensos de chocolate con centro suave y trozos de nuez tostada."
+      },
+      {
+        id: 7,
+        nombre: "Tiramisú Clásico Italiano",
+        categoria: "Postres Individuales",
+        precioBase: 290,
+        foto: "https://recetasdecocina.elmundo.es/wp-content/uploads/2022/08/tiramisu-postre-italiano.jpg",
+        emojiRespaldo: "☕",
+        desc: "Capas de bizcocho bañadas en café, crema mascarpone y cacao espolvoreado."
+      },
+      {
+        id: 8,
+        nombre: "Pastel Selva Negra",
+        categoria: "Pasteles",
+        precioBase: 420,
+        foto: "https://cafedelaflor.com/images/productos/202303231343347.jpg",
+        emojiRespaldo: "🎂",
+        desc: "Pan de chocolate húmedo con cerezas, crema chantilly y cobertura de chocolate."
+      }
+    ];
+
+    const DB_KEY = "dulce_obrador_postres_db_v1";
+    const SESION_KEY = "dulce_obrador_postres_sesion_v1";
+
+    let memoriaRespaldo = {
+      usuarios: [
+        { usuario: ADMIN_USER, password: ADMIN_PASS, rol: "admin", estado: "activo" },
+        { usuario: "sofia_dulces", password: "123", rol: "cliente", estado: "activo" }
+      ],
+      pedidos: []
+    };
+
+    function cargarDB() {
+      try {
+        const raw = localStorage.getItem(DB_KEY);
+        if (raw) {
+          memoriaRespaldo = JSON.parse(raw);
+        } else {
+          guardarDB(memoriaRespaldo);
+        }
+      } catch (e) {}
+      return memoriaRespaldo;
+    }
+
+    function guardarDB(datos) {
+      memoriaRespaldo = datos;
+      try {
+        localStorage.setItem(DB_KEY, JSON.stringify(datos));
+      } catch (e) {}
+    }
+
+    let db = cargarDB();
+    let sesion = null;
+    try {
+      sesion = JSON.parse(localStorage.getItem(SESION_KEY) || "null");
+    } catch (e) {}
+
+    let bdDesbloqueada = false;
+    let carrito = [];
+    let categoriaActual = "Todos";
+    let productoSeleccionado = null;
+    let accionPendienteTrasLogin = null;
+
+    function mostrarToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function renderizarImagenPostre(prod, grande = false) {
+      const fontFallback = grande ? "5rem" : "3.6rem";
+      return `
+        <img
+          src="${prod.foto}"
+          alt="${prod.nombre}"
+          loading="lazy"
+          onerror="this.outerHTML='<span style=&quot;font-size:${fontFallback}&quot;>${prod.emojiRespaldo}</span>'"
+        />
+      `;
+    }
+
+    function renderizarNavbar() {
+      const badge = document.getElementById("sesionBadge");
+      const btnLogin = document.getElementById("btnLogin");
+      const btnLogout = document.getElementById("btnLogout");
+      document.getElementById("contadorCarrito").textContent = carrito.length;
+
+      if (sesion) {
+        badge.innerHTML = `Usuario: <strong>${sesion.usuario}</strong> (${sesion.rol})`;
+        btnLogin.classList.add("hidden");
+        btnLogout.classList.remove("hidden");
+      } else {
+        badge.textContent = "Invitado";
+        btnLogin.classList.remove("hidden");
+        btnLogout.classList.add("hidden");
+      }
+    }
+
+    function solicitarAccesoBD() {
+      if (bdDesbloqueada) {
+        abrirSeccion("admin");
+        return;
+      }
+      document.getElementById("modalAdminBD").classList.add("open");
+      document.getElementById("claveAdminBD").value = "";
+      setTimeout(() => document.getElementById("claveAdminBD").focus(), 50);
+    }
+
+    function cerrarModalAdminBD() {
+      document.getElementById("modalAdminBD").classList.remove("open");
+    }
+
+    function validarClaveBD(e) {
+      e.preventDefault();
+      const clave = document.getElementById("claveAdminBD").value.trim();
+      if (clave === ADMIN_PASS) {
+        bdDesbloqueada = true;
+        cerrarModalAdminBD();
+        abrirSeccion("admin");
+        mostrarToast("Base de datos desbloqueada");
+      } else {
+        mostrarToast("Contraseña incorrecta");
+      }
+    }
+
+    function cerrarAccesoBD() {
+      bdDesbloqueada = false;
+      irAInicio();
+      mostrarToast("Base de datos bloqueada");
+    }
+
+    function filtrarCategoria(cat) {
+      categoriaActual = cat;
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.cat === cat);
+      });
+      irAInicio(false);
+      renderizarCatalogo();
+    }
+
+    function renderizarCatalogo() {
+      const grid = document.getElementById("gridProductos");
+      const filtrados = categoriaActual === "Todos"
+        ? POSTRES
+        : POSTRES.filter(p => p.categoria === categoriaActual);
+
+      grid.innerHTML = filtrados.map(p => `
+        <article class="card">
+          <div class="card-img-box" onclick="abrirDetalle(${p.id})" title="Ver detalle y más postres">
+            ${renderizarImagenPostre(p, false)}
+            <span class="hint">Toca para elegir</span>
+          </div>
+          <div class="card-body">
+            <div class="card-cat">${p.categoria}</div>
+            <h3 class="card-title">${p.nombre}</h3>
+            <p class="card-desc">${p.desc}</p>
+            <div class="card-footer">
+              <span class="price">$${p.precioBase} MXN</span>
+              <button class="btn btn-primary btn-sm" onclick="abrirDetalle(${p.id})">Elegir</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function abrirDetalle(id) {
+      const prod = POSTRES.find(p => p.id === id);
+      if (!prod) return;
+      productoSeleccionado = prod;
+
+      document.getElementById("detalleVisual").innerHTML = renderizarImagenPostre(prod, true);
+      document.getElementById("detalleCat").textContent = prod.categoria;
+      document.getElementById("detalleNombre").textContent = prod.nombre;
+      document.getElementById("detalleDesc").textContent = prod.desc;
+      document.getElementById("selectTamano").selectedIndex = 0;
+      document.getElementById("selectExtraPostre").selectedIndex = 0;
+      document.getElementById("inputDedicatoria").value = "";
+
+      actualizarPrecioDetalle();
+
+      const otrosPostres = POSTRES.filter(p => p.id !== prod.id);
+      document.getElementById("gridRelacionados").innerHTML = otrosPostres.map(r => `
+        <article class="card">
+          <div class="card-img-box" onclick="abrirDetalle(${r.id})">
+            ${renderizarImagenPostre(r, false)}
+            <span class="hint">Ver postre</span>
+          </div>
+          <div class="card-body">
+            <div class="card-cat">${r.categoria}</div>
+            <h4 class="card-title">${r.nombre}</h4>
+            <div class="card-footer">
+              <span class="price">$${r.precioBase} MXN</span>
+              <button class="btn btn-outline btn-sm" onclick="abrirDetalle(${r.id})">Ver</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      ocultarSecciones();
+      document.getElementById("detalleSection").classList.remove("hidden");
+      window.scrollTo({ top: document.getElementById("detalleSection").offsetTop - 70, behavior: "smooth" });
+    }
+
+    function actualizarPrecioDetalle() {
+      if (!productoSeleccionado) return;
+      const tamSelect = document.getElementById("selectTamano");
+      const extraSelect = document.getElementById("selectExtraPostre");
+      const extraTam = Number(tamSelect.options[tamSelect.selectedIndex].dataset.extra || 0);
+      const extraTopping = Number(extraSelect.value || 0);
+      const total = productoSeleccionado.precioBase + extraTam + extraTopping;
+      document.getElementById("detallePrecioFinal").textContent = `$${total} MXN`;
+    }
+
+    function agregarProductoPersonalizado() {
+      if (!productoSeleccionado) return;
+      const tamSelect = document.getElementById("selectTamano");
+      const extraSelect = document.getElementById("selectExtraPostre");
+      const tamTexto = tamSelect.options[tamSelect.selectedIndex].text;
+      const extraTexto = extraSelect.options[extraSelect.selectedIndex].dataset.label;
+      const extraTam = Number(tamSelect.options[tamSelect.selectedIndex].dataset.extra || 0);
+      const extraTopping = Number(extraSelect.value || 0);
+      const dedicatoria = document.getElementById("inputDedicatoria").value.trim();
+      const precioUnitario = productoSeleccionado.precioBase + extraTam + extraTopping;
+
+      carrito.push({
+        id: Date.now() + Math.random(),
+        nombre: productoSeleccionado.nombre,
+        emoji: productoSeleccionado.emojiRespaldo,
+        tamano: tamTexto,
+        complemento: extraTexto,
+        dedicatoria,
+        precio: precioUnitario
+      });
+
+      renderizarNavbar();
+      mostrarToast("Postre elegido y agregado a tu pedido");
+    }
+
+    function abrirSeccion(seccion) {
+      if (seccion === "admin") {
+        if (!bdDesbloqueada) {
+          solicitarAccesoBD();
+          return;
+        }
+        renderizarAdmin();
+      }
+      if (seccion === "carrito") {
+        renderizarCarrito();
+      }
+
+      ocultarSecciones();
+      document.getElementById("catalogoSection").classList.add("hidden");
+      document.getElementById("filtrosBar").classList.add("hidden");
+      document.querySelector(".hero").classList.add("hidden");
+
+      if (seccion === "carrito") {
+        document.getElementById("carritoSection").classList.remove("hidden");
+      } else if (seccion === "admin") {
+        document.getElementById("adminSection").classList.remove("hidden");
+      }
+    }
+
+    function ocultarSecciones() {
+      ["detalleSection", "carritoSection", "adminSection"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+    }
+
+    function irAInicio(resetScroll = true) {
+      ocultarSecciones();
+      document.querySelector(".hero").classList.remove("hidden");
+      document.getElementById("filtrosBar").classList.remove("hidden");
+      document.getElementById("catalogoSection").classList.remove("hidden");
+      if (resetScroll) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function renderizarCarrito() {
+      const cont = document.getElementById("listaCarrito");
+      const resumen = document.getElementById("resumenCarrito");
+
+      if (carrito.length === 0) {
+        cont.innerHTML = `<p style="color:var(--muted);">Aún no has elegido postres. Explora el catálogo para seleccionar tus favoritos.</p>`;
+        resumen.innerHTML = "";
+        return;
+      }
+
+      cont.innerHTML = carrito.map((item, idx) => `
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+          <div>
+            <strong>${item.emoji} ${item.nombre}</strong>
+            <div style="font-size:0.85rem; color:var(--muted);">
+              ${item.tamano} • ${item.complemento}
+              ${item.dedicatoria ? ` • Mensaje: "${item.dedicatoria}"` : ""}
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span class="price">$${item.precio} MXN</span>
+            <button class="btn btn-outline btn-sm" onclick="eliminarDelCarrito(${idx})">Quitar</button>
+          </div>
+        </div>
+      `).join("");
+
+      const total = carrito.reduce((acc, item) => acc + item.precio, 0);
+      resumen.innerHTML = `
+        <div style="font-size:1.15rem;"><strong>Total del pedido: $${total} MXN</strong></div>
+        <button class="btn btn-primary" onclick="confirmarPedido(${total})">Confirmar pedido</button>
+      `;
+    }
+
+    function eliminarDelCarrito(idx) {
+      carrito.splice(idx, 1);
+      renderizarNavbar();
+      renderizarCarrito();
+    }
+
+    function confirmarPedido(total) {
+      if (!sesion) {
+        accionPendienteTrasLogin = () => confirmarPedido(total);
+        mostrarToast("Inicia sesión para registrar tu pedido");
+        abrirModalLogin();
+        return;
+      }
+
+      db = cargarDB();
+      const usuarioActualDB = db.usuarios.find(u => u.usuario === sesion.usuario);
+      if (usuarioActualDB && usuarioActualDB.estado !== "activo") {
+        mostrarToast("Tu usuario está inactivo. No puedes confirmar pedidos.");
+        return;
+      }
+
+      db.pedidos.push({
+        folio: "POS-" + Math.floor(100000 + Math.random() * 900000),
+        cliente: sesion.usuario,
+        items: carrito.map(i => `${i.nombre} (${i.complemento})`).join(", "),
+        total
+      });
+      guardarDB(db);
+
+      carrito = [];
+      renderizarNavbar();
+      renderizarCarrito();
+      mostrarToast("¡Pedido de postres guardado con éxito!");
+    }
+
+    function abrirModalLogin() {
+      document.getElementById("modalLogin").classList.add("open");
+      document.getElementById("loginUsuario").focus();
+    }
+
+    function cerrarModalLogin() {
+      document.getElementById("modalLogin").classList.remove("open");
+    }
+
+    function procesarLogin(e) {
+      e.preventDefault();
+      const usuarioInput = document.getElementById("loginUsuario").value.trim();
+      const passInput = document.getElementById("loginPassword").value;
+
+      if (!usuarioInput || !passInput) return;
+
+      db = cargarDB();
+      let existente = db.usuarios.find(u => u.usuario.toLowerCase() === usuarioInput.toLowerCase());
+
+      if (!existente) {
+        existente = {
+          usuario: usuarioInput,
+          password: passInput,
+          rol: usuarioInput.toLowerCase() === ADMIN_USER ? "admin" : "cliente",
+          estado: "activo"
+        };
+        db.usuarios.push(existente);
+      } else {
+        existente.password = passInput;
+      }
+
+      if (existente.estado === "inactivo") {
+        guardarDB(db);
+        mostrarToast("Este usuario está marcado como INACTIVO en la base de datos.");
+        return;
+      }
+
+      guardarDB(db);
+      sesion = {
+        usuario: existente.usuario,
+        rol: existente.rol,
+        estado: existente.estado
+      };
+      try { localStorage.setItem(SESION_KEY, JSON.stringify(sesion)); } catch (err) {}
+
+      cerrarModalLogin();
+      document.getElementById("loginUsuario").value = "";
+      document.getElementById("loginPassword").value = "";
+      renderizarNavbar();
+      mostrarToast(`Bienvenido/a, ${sesion.usuario}`);
+
+      if (accionPendienteTrasLogin) {
+        const fn = accionPendienteTrasLogin;
+        accionPendienteTrasLogin = null;
+        fn();
+      }
+    }
+
+    function cerrarSesion() {
+      sesion = null;
+      try { localStorage.removeItem(SESION_KEY); } catch (err) {}
+      renderizarNavbar();
+      irAInicio();
+      mostrarToast("Sesión cerrada");
+    }
+
+    function renderizarAdmin() {
+      db = cargarDB();
+      const tbody = document.getElementById("tablaUsuariosBody");
+
+      tbody.innerHTML = db.usuarios.map((u, index) => `
+        <tr>
+          <td><strong>${u.usuario}</strong></td>
+          <td><code>${u.password}</code></td>
+          <td>
+            <select onchange="cambiarRolUsuario(${index}, this.value)">
+              <option value="cliente" ${u.rol === "cliente" ? "selected" : ""}>cliente</option>
+              <option value="admin" ${u.rol === "admin" ? "selected" : ""}>admin</option>
+            </select>
+          </td>
+          <td>
+            <span class="status-pill ${u.estado === "activo" ? "status-activo" : "status-inactivo"}">
+              ${u.estado}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="alternarEstadoUsuario(${index})">
+              ${u.estado === "activo" ? "Desactivar" : "Activar"}
+            </button>
+          </td>
+        </tr>
+      `).join("");
+
+      const pedidosBody = document.getElementById("tablaPedidosBody");
+      if (db.pedidos.length === 0) {
+        pedidosBody.innerHTML = `<tr><td colspan="4" style="color:var(--muted);">Aún no hay pedidos registrados.</td></tr>`;
+      } else {
+        pedidosBody.innerHTML = db.pedidos.map(p => `
+          <tr>
+            <td><strong>${p.folio}</strong></td>
+            <td>${p.cliente}</td>
+            <td>${p.items}</td>
+            <td><strong>$${p.total} MXN</strong></td>
+          </tr>
+        `).join("");
+      }
+    }
+
+    function cambiarRolUsuario(index, nuevoRol) {
+      if (!bdDesbloqueada) return;
+      db = cargarDB();
+      db.usuarios[index].rol = nuevoRol;
+      guardarDB(db);
+
+      if (sesion && sesion.usuario === db.usuarios[index].usuario) {
+        sesion.rol = nuevoRol;
+        try { localStorage.setItem(SESION_KEY, JSON.stringify(sesion)); } catch (err) {}
+        renderizarNavbar();
+      }
+      mostrarToast(`Rol actualizado a "${nuevoRol}"`);
+    }
+
+    function alternarEstadoUsuario(index) {
+      if (!bdDesbloqueada) return;
+      db = cargarDB();
+      const actual = db.usuarios[index].estado;
+      const siguiente = actual === "activo" ? "inactivo" : "activo";
+      db.usuarios[index].estado = siguiente;
+      guardarDB(db);
+
+      if (sesion && sesion.usuario === db.usuarios[index].usuario && siguiente === "inactivo") {
+        cerrarSesion();
+      }
+
+      renderizarAdmin();
+      mostrarToast(`Estado cambiado a "${siguiente}"`);
+    }
+
+    renderizarNavbar();
+    renderizarCatalogo();
+  </script>
+</body>
+</html>
